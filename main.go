@@ -9,17 +9,27 @@ import (
 // Filename limitations for Windows.
 // See also https://www.fileside.app/blog/2023-03-17_windows-file-paths
 const (
-	DisallowedCharacters = `<>"/\|?*.:`
-	PathLengthLimits     = 32767
-	NameLengthLimits     = 255
-
 	hexTable = "0123456789ABCDEF"
 )
+
+func findInvalidChar(s string) int {
+	for i, r := range s {
+		switch r {
+		case '<', '>', '"', '/', '\\', '|', '?', '*', '.', ':':
+			return i
+		default:
+			if r < ' ' {
+				return i
+			}
+		}
+	}
+	return -1
+}
 
 func ToSafe(name string, prefix byte) string {
 	var buffer strings.Builder
 	for {
-		index := strings.IndexAny(name, DisallowedCharacters)
+		index := findInvalidChar(name)
 		if index < 0 {
 			buffer.WriteString(name)
 			return buffer.String()

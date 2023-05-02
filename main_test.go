@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	source = `a<b>c"d/e\f|g?h*i.j:k`
-	expect = `a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai%2Ej%3Ak`
+	source = "\x00" + `a<b>c"d/e\f|g?h*i.j:k`
+	expect = `%00a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai%2Ej%3Ak`
 )
 
 func TestAll(t *testing.T) {
